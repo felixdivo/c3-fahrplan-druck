@@ -240,7 +240,7 @@
 
                     const roomAbbrev = abbreviateRoom(row.roomName);
                     const trainId = row.id.toString().substring(0, 5);
-                    const trainClass = ['1', '0', 'F', 'G'].includes(roomAbbrev) ? ' train-number-red' : '';
+                    const trainClass = ['1', 'Z', 'F', 'G'].includes(roomAbbrev) ? ' train-number-red' : '';
                     const longNumClass = trainId.length > 2 ? ' train-num-long' : '';
                     const roomNameDisplay = roomAbbrev.includes('*') ? ` <span class="room-name">* ${row.roomName}</span>` : '';
 
