@@ -231,13 +231,6 @@
                     return versionToken ? `v${versionToken}` : input;
                 };
 
-                // Render recording icon
-                const recordingIconHTML = (doNotRecord) => {
-                    if (doNotRecord === false) return '<div class="no-video-icon"><i data-lucide="video"></i></div>';
-                    if (doNotRecord === true) return '<div class="no-video-icon"><i data-lucide="video-off"></i></div>';
-                    return '';
-                };
-
                 // Render one schedule row
                 const renderRow = (row, trackCodeOverride = null) => {
                     const duration = toMinutes(row.duration);
@@ -251,12 +244,19 @@
                     const longNumClass = trainId.length > 2 ? ' train-num-long' : '';
                     const roomNameDisplay = roomAbbrev.includes('*') ? ` <span class="room-name">* ${row.roomName}</span>` : '';
 
+                    // Render recording icon
+                    const recordingIconHTML = (doNotRecord, slug) => {
+                        if (doNotRecord === false) return `<a class="no-video-icon" href="https://media.ccc.de/v/${slug}"><i data-lucide="video"></i></a>`;
+                        if (doNotRecord === true) return '<a class="no-video-icon"><i data-lucide="video-off"></i></a>';
+                        return '';
+                    };
+
                     return `
             <div class="departure-row">
                 <div class="time">${row.start}</div>
                 <div class="trains">
                     <div class="train-number${trainClass}"><span class="train-prefix">${trackCode}</span>&#8239;<span class="train-num${longNumClass}">${trainId}</span></div>
-                    ${recordingIconHTML(row.do_not_record)}
+                    ${recordingIconHTML(row.do_not_record, row.slug)}
                 </div>
                 <div class="route">
                     <span class="destination"><a href="${row.url}">${row.title}</a>&#8239;<i data-lucide="circle-dot"></i></span>

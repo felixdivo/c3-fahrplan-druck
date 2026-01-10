@@ -309,7 +309,7 @@ noscript {
     font-size: 16px;
 }
 
-.destination a {
+a {
     color: inherit;
     text-decoration: inherit;
 }
