@@ -384,7 +384,7 @@
 
                     departureTable.innerHTML = '';
                     let currentDay = null;
-                    allTalks.forEach((row) => {
+                    allTalks.forEach((row, idx) => {
                         if (currentDay !== row.dayIndex) {
                             currentDay = row.dayIndex;
                             const dayHTML = `
@@ -394,10 +394,10 @@
                                 <div>Day ${row.dayIndex}</div>
                                 <div></div>
                         </div>`;
-                            departureTable.insertAdjacentHTML('beforeend', dayHTML);
+                            departureTable.insertAdjacentHTML('beforeend', `<div class="time-range-group">${dayHTML}${renderRow(row)}</div>`);
+                        } else {
+                            departureTable.insertAdjacentHTML('beforeend', renderRow(row));
                         }
-
-                        departureTable.insertAdjacentHTML('beforeend', renderRow(row));
                     });
 
                     // Legend footer text (original)
@@ -455,9 +455,7 @@
                             <div>${rangeLabel}</div>
                             <div></div>
                         </div>`;
-                            departureTable.insertAdjacentHTML('beforeend', `<div class="time-range-group">${headerHTML}`);
-                            departureTable.insertAdjacentHTML('beforeend', renderRow(row));
-                            departureTable.insertAdjacentHTML('beforeend', '</div>');
+                            departureTable.insertAdjacentHTML('beforeend', `<div class="time-range-group">${headerHTML}${renderRow(row)}</div>`);
                         } else {
                             departureTable.insertAdjacentHTML('beforeend', renderRow(row));
                         }
