@@ -321,6 +321,7 @@ noscript {
     width: 0.8em;
     height: 0.8em;
     stroke-width: 3px;
+    vertical-align: -0.05em;
 }
 
 .row-number {
