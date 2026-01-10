@@ -1,6 +1,6 @@
 # c3-fahrplan-druck
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-c3--fahrplan--druck.divo.link%2Fweb-blue?style=flat-square)](https://c3-fahrplan-druck.divo.link/web)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-c3--fahrplan--druck.divo.link%2Fevents%2F39c3-blue?style=flat-square)](https://c3-fahrplan-druck.divo.link/events/39c3)
 
 The [Fahrplan](https://fahrplan.events.ccc.de/congress/2025/fahrplan) in the style of a [Fahrplan](https://upload.wikimedia.org/wikipedia/commons/e/ed/Bremen%2C_Fahrplan_(Hbf).jpg).
 
@@ -23,6 +23,10 @@ The [Fahrplan](https://fahrplan.events.ccc.de/congress/2025/fahrplan) in the sty
 We had some issues printing this to PDF if the size grows beyond DIN A0+. However, directly using the system (not the browser-provided) printing dialog and saving that as PDF or directly printing from that worked for us.
 
 We strongly recommend directly using yellow paper for physical prints.
+
+## Adding new events
+
+TODO
 
 ## Data source and customization
 
