@@ -73,6 +73,9 @@
 
 :root {
     --accent-color: #ff3719;
+    --grid-cols-header: 56px 72px 1fr 36px;
+    --grid-cols-content: 56px 72px 1fr 18px;
+    --cell-padding: 2px 3px;
 }
 
 body {
@@ -92,23 +95,12 @@ noscript {
     margin-bottom: 24px;
 }
 
-.schedule-container {
-    width: 100%;
-    height: auto;
-    margin: 0;
-    background-color: white;
-}
-
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
     font-size: 36px;
-}
-
-.header-right {
-    font-weight: bold;
 }
 
 .c3-logo {
@@ -133,23 +125,12 @@ noscript {
     align-items: baseline;
 }
 
-.title-label-bold,
-.station-name {
-    font-weight: bold;
-}
-
-.title-label-italic {
-    font-style: italic;
-}
-
 .column-headers {
     display: grid;
-    grid-template-columns: 56px 72px 1.4fr 36px;
+    grid-template-columns: var(--grid-cols-header);
     gap: 2px;
     padding: 7px 3px 6px 3px;
     background-color: #d0d0d0;
-    border-bottom: none;
-    font-weight: bold;
     font-size: 12px;
     margin-bottom: 1px;
 }
@@ -158,8 +139,6 @@ noscript {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     column-gap: 12px;
-    row-gap: 0;
-    width: 100%;
     margin-bottom: 1px;
 }
 
@@ -168,14 +147,6 @@ noscript {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-}
-
-.column-header-bold {
-    font-weight: bold;
-}
-
-.column-header-italic {
-    font-style: italic;
 }
 
 .time-range {
@@ -230,8 +201,7 @@ noscript {
     line-height: 1.4;
 }
 
-.legend-footer a,
-.legend-footer a:visited {
+.legend-footer a {
     color: black;
     text-decoration: none;
 }
@@ -251,25 +221,23 @@ noscript {
     column-fill: balance;
 }
 
-.no-data {
-    padding: 16px;
-    font-size: 16px;
-    font-style: italic;
-    color: #333;
-}
-
+.no-data,
 .loading {
     padding: 16px;
     font-size: 16px;
     color: #333;
 }
 
+.no-data {
+    font-style: italic;
+}
+
 .departure-row {
     display: grid;
-    grid-template-columns: 56px 72px 1.4fr 36px;
-    column-gap: 2px;
+    grid-template-columns: var(--grid-cols-content);
+    gap: 0 2px;
     border-bottom: 1px solid #000;
-    align-items: start;
+    align-items: stretch;
     break-inside: avoid;
 }
 
@@ -278,13 +246,13 @@ noscript {
     font-weight: bold;
     line-height: 1;
     background: #e8e8e8;
-    padding: 2px 3px;
+    padding: var(--cell-padding);
 }
 
 .trains,
 .route,
 .row-number {
-    padding: 2px 3px;
+    padding: var(--cell-padding);
 }
 
 .trains {
@@ -353,7 +321,6 @@ noscript {
     width: 0.8em;
     height: 0.8em;
     stroke-width: 3px;
-    vertical-align: baseline;
 }
 
 .row-number {
