@@ -26,27 +26,23 @@ We strongly recommend directly using yellow paper for physical prints.
 
 ## Contributing new events
 
+Feel free to fork this and use it on your event!
+
 We plan to collect and archive Fahrpläne for various events. ❤️
 If you create one for your event, please consider sharing it back with us so we can add it to the collection!
 It should be as easy as forking this repo, adding a unique folder under `events/` (possibly copying content from an existing event), and creating a pull request.
 
-## Data source and customization
+### Customization
 
-Feel free to fork this and use it on your event! However, it would be cool to collect the created Fahrpläne somewhere (make a museum).
-
-Top-level constants near the start of `index.html` control event-specific behavior:
-
+Top-level constants near the start of each event's `index.html` control basic event-specific behavior:
 - `scheduleUrl`: JSON feed to load (currently the 39C3 schedule).
 - `trackMap`: Map track names from the feed to short codes shown in the table.
 - `totalDays`: Number of conference days used for day labels and footer copy.
 - `headerDateRange`: Text shown in the top-left header.
 - `stationName`: Main title in the header area (also used when showing active filters).
 - `timeRanges`: Time-band labels for single-day grouping.
+- `roomAbbrevMap`: Exact room name to abbreviation/icon mapping.
+- `roomAbbrevPartial`: Partial room name matches to abbreviation/icon mapping.
 
-To point the page at another event:
-1) Change `scheduleUrl` to your event’s feed.
-2) Update `trackMap` and the track table above if the codes differ.
-3) Set `totalDays`, `headerDateRange`, and `stationName` to match your event.
-4) (Optional) Adjust `timeRanges` for different grouping, `abbreviateRoom()` for room codes/icons, and legend text inside `renderLegend()`.
-
-For deeper layout or style tweaks, edit `index.html` and `style.css` directly. If anything feels unclear, ask for help and we’ll iterate together.
+For deeper layout or style tweaks, edit `index.html` and `style.css` directly.
+If anything feels unclear, feel free to reach out (e.g., open an [issue](https://github.com/felixdivo/c3-fahrplan-druck/issues))!
