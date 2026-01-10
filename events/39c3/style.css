@@ -309,6 +309,10 @@ noscript {
     font-size: 16px;
 }
 
+.destination-icon {
+    white-space: nowrap;
+}
+
 a {
     color: inherit;
     text-decoration: inherit;
