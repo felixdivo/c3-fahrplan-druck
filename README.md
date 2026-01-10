@@ -24,9 +24,11 @@ We had some issues printing this to PDF if the size grows beyond DIN A0+. Howeve
 
 We strongly recommend directly using yellow paper for physical prints.
 
-## Adding new events
+## Contributing new events
 
-TODO
+We plan to collect and archive Fahrpläne for various events. ❤️
+If you create one for your event, please consider sharing it back with us so we can add it to the collection!
+It should be as easy as forking this repo, adding a unique folder under `events/` (possibly copying content from an existing event), and creating a pull request.
 
 ## Data source and customization
 
