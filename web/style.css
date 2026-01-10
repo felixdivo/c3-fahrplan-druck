@@ -309,6 +309,11 @@ noscript {
     font-size: 16px;
 }
 
+.destination a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
 /* Lucide icons sizing */
 [data-lucide] {
     width: 1em;

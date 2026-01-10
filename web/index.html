@@ -259,7 +259,7 @@
                     ${recordingIconHTML(row.do_not_record)}
                 </div>
                 <div class="route">
-                    <span class="destination">${row.title}&#8239;<i data-lucide="circle-dot"></i></span>
+                    <span class="destination"><a href="${row.url}">${row.title}</a>&#8239;<i data-lucide="circle-dot"></i></span>
                     <span class="station">${speaker}</span>
                     <span class="station-time">(&#8239;→&#8239;${toHours(toMinutes(row.start) + duration)}&#8239;)${roomNameDisplay}</span>
                 </div>
