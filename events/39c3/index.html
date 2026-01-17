@@ -40,7 +40,83 @@
     </div>
 
     <!-- Departure Rows -->
-    <div class="departure-table"></div>
+    <div class="departure-table">
+        <template id="legend-template">
+            <div class="legend-root">
+                <div class="time-range legend-title">
+                    <div style="grid-column: 2 / -1; text-align: left;">Zeichenerklärung/Explanations/Legende</div>
+                </div>
+                <div class="legend-section">
+                    <div class="legend-group">
+                        <h4>Events im Hauptverkehr/Main stage events/trains grandes lignes</h4>
+                        <table class="legend-table">
+                            <tr><td>ART</td><td>Art & Beauty</td></tr>
+                            <tr><td>CCC</td><td>CCC & Community</td></tr>
+                            <tr><td>HARD</td><td>Hardware</td></tr>
+                            <tr><td>ESP</td><td>Ethics, Society & Politics</td></tr>
+                            <tr><td>SCI</td><td>Science</td></tr>
+                            <tr><td>SEC</td><td>Security</td></tr>
+                        </table>
+                    </div>
+
+                    <div style="height: 1em;"></div>
+
+                    <div class="legend-group">
+                        <h4>Alle anderen Einträge/All other entries/Tous les autres</h4>
+                        <table class="legend-table">
+                            <tr><td>KID</td><td>Kidspace</td></tr>
+                            <tr><td>DJ</td><td>DJ-Set</td></tr>
+                            <tr><td>LP</td><td>Live Performance</td></tr>
+                            <tr><td>NAT</td><td>Not a Track</td></tr>
+                        </table>
+                    </div>
+
+                    <div style="height: 1em;"></div>
+
+                    <div class="legend-group">
+                        <h4>Symbole</h4>
+                        <table class="legend-table">
+                            <tr><td><i data-lucide="video"></i></td><td>Diese Fahrt wird zu Schulungszwecken aufgezeichnet</td></tr>
+                            <tr><td><i data-lucide="video-off"></i></td><td>Diese Fahrt ist geplant kaputt</td></tr>
+                            <tr><td><i data-lucide="circle-dot"></i></td><td>bis hier sind alle Halte angegeben</td></tr>
+                            <tr><td><i data-lucide="toy-brick"></i></td><td>hält nur in Kidspace</td></tr>
+                            <tr><td><i data-lucide="mic-vocal"></i></td><td>hält nur in Sendezentrum</td></tr>
+                            <tr><td><i data-lucide="coffee"></i></td><td>hält nur in House of Tea</td></tr>
+                            <tr><td><i data-lucide="wrench"></i></td><td>hält nur in Hardware Hacking Area</td></tr>
+                            <tr><td><i data-lucide="music"></i></td><td>hält nur in Chaos Computer Music Club</td></tr>
+                            <tr><td><i data-lucide="armchair"></i></td><td>hält nur in Chill Floor</td></tr>
+                            <tr><td><i data-lucide="door-open"></i></td><td>hält nur in Komonin</td></tr>
+                            <tr><td><i data-lucide="trees"></i></td><td>hält nur in Bits&Bäume</td></tr>
+                        </table>
+                    </div>
+
+                    <div style="height: 1em;"></div>
+
+                    <div class="legend-group">
+                        <h4>Als allgemeine Feiertage gelten:</h4>
+                        <div>Tag 0 bis Tag 4: 26.12. bis 30.12.</div>
+                        <div>Digital Independence Day (DI.DAY)</div>
+                    </div>
+
+                    <div style="height: 1em;"></div>
+
+                    <div class="legend-footer">
+                        Berichtigt werden nur die im CCH abgehängten Fahrpläne./Only Fahrpläne removed from display in CCH will be corrected./Seulement les Fahrpläne retirés de l'affichage dans le CCH seront corrigés.<br><br>
+                        Angaben mit Gewähr - Änderungen und Irrtümer vorbehalten.<br><br>
+                        * Du suchst hier leider an der falschen Stelle.<br><br>
+                        <img src="bahnhof.de.png" alt="QR Code" class="qr-code-placeholder">
+                        Von Anton und Felix.
+                        Bei Feedback und Änderungsvorschlägen siehe <a href="https://github.com/felixdivo/c3-fahrplan-druck" target="_blank">github.com/felixdivo/c3-fahrplan-druck</a>.<br><br>
+
+                        Datenstand: <span data-legend-version></span><br><br>
+
+                        <span data-legend-footer-text></span>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <div class="departure-table-content"></div>
+    </div>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
         <script>
             (async () => {
@@ -124,8 +200,10 @@
                 const stationNameEl = document.querySelector('.station-name');
                 const columnHeadersWrapper = document.querySelector('#column-headers-wrapper');
                 const columnHeadersTemplate = document.querySelector('#column-headers-template');
+                const legendTemplate = document.querySelector('#legend-template');
                 const departureTable = document.querySelector('.departure-table');
-                if (!departureTable || !columnHeadersWrapper || !columnHeadersTemplate) return;
+                const departureTableContent = document.querySelector('.departure-table-content');
+                if (!departureTable || !departureTableContent || !columnHeadersWrapper || !columnHeadersTemplate || !legendTemplate) return;
 
                 // Render column headers to match column count
                 columnHeadersWrapper.innerHTML = '';
@@ -170,9 +248,9 @@
                 };
 
                 const showError = (msg) => {
-                    departureTable.innerHTML = `<div class="no-data">${msg}</div>`;
+                    departureTableContent.innerHTML = `<div class="no-data">${msg}</div>`;
                 };
-                departureTable.innerHTML = '<div class="loading">Lade Inhalte…</div>';
+                departureTableContent.innerHTML = '<div class="loading">Lade Inhalte…</div>';
 
                 // Fetch schedule data
                 let data;
@@ -259,77 +337,15 @@
                 };
 
                 // Legend HTML
-                const renderLegend = (formattedVersion, footerText) => `
-        <div class="time-range legend-title">
-                <div style="grid-column: 2 / -1; text-align: left;">Zeichenerklärung/Explanations/Legende</div>
-        </div>
-        <div class="legend-section">
-                <div class="legend-group">
-                        <h4>Events im Hauptverkehr/Main stage events/trains grandes lignes</h4>
-                        <table class="legend-table">
-                                <tr><td>ART</td><td>Art & Beauty</td></tr>
-                                <tr><td>CCC</td><td>CCC & Community</td></tr>
-                                <tr><td>HARD</td><td>Hardware</td></tr>
-                                <tr><td>ESP</td><td>Ethics, Society & Politics</td></tr>
-                                <tr><td>SCI</td><td>Science</td></tr>
-                                <tr><td>SEC</td><td>Security</td></tr>
-                        </table>
-                </div>
-
-                <div style="height: 1em;"></div>
-
-                <div class="legend-group">
-                        <h4>Alle anderen Einträge/All other entries/Tous les autres</h4>
-                        <table class="legend-table">
-                                <tr><td>KID</td><td>Kidspace</td></tr>
-                                <tr><td>DJ</td><td>DJ-Set</td></tr>
-                                <tr><td>LP</td><td>Live Performance</td></tr>
-                                <tr><td>NAT</td><td>Not a Track</td></tr>
-                        </table>
-                </div>
-
-                <div style="height: 1em;"></div>
-
-                <div class="legend-group">
-                        <h4>Symbole</h4>
-                        <table class="legend-table">
-                                <tr><td><i data-lucide="video"></i></td><td>Diese Fahrt wird zu Schulungszwecken aufgezeichnet</td></tr>
-                                <tr><td><i data-lucide="video-off"></i></td><td>Diese Fahrt ist geplant kaputt</td></tr>
-                                <tr><td><i data-lucide="circle-dot"></i></td><td>bis hier sind alle Halte angegeben</td></tr>
-                                <tr><td><i data-lucide="toy-brick"></i></td><td>hält nur in Kidspace</td></tr>
-                                <tr><td><i data-lucide="mic-vocal"></i></td><td>hält nur in Sendezentrum</td></tr>
-                                <tr><td><i data-lucide="coffee"></i></td><td>hält nur in House of Tea</td></tr>
-                                <tr><td><i data-lucide="wrench"></i></td><td>hält nur in Hardware Hacking Area</td></tr>
-                                <tr><td><i data-lucide="music"></i></td><td>hält nur in Chaos Computer Music Club</td></tr>
-                                <tr><td><i data-lucide="armchair"></i></td><td>hält nur in Chill Floor</td></tr>
-                                <tr><td><i data-lucide="door-open"></i></td><td>hält nur in Komonin</td></tr>
-                                <tr><td><i data-lucide="trees"></i></td><td>hält nur in Bits&Bäume</td></tr>
-                        </table>
-                </div>
-
-                <div style="height: 1em;"></div>
-
-                <div class="legend-group">
-                        <h4>Als allgemeine Feiertage gelten:</h4>
-                        <div>Tag 0 bis Tag 4: 26.12. bis 30.12.</div>
-                        <div>Digital Independence Day (DI.DAY)</div>
-                </div>
-
-                <div style="height: 1em;"></div>
-
-                <div class="legend-footer">
-                        Berichtigt werden nur die im CCH abgehängten Fahrpläne./Only Fahrpläne removed from display in CCH will be corrected./Seulement les Fahrpläne retirés de l'affichage dans le CCH seront corrigés.<br><br>
-                        Angaben mit Gewähr - Änderungen und Irrtümer vorbehalten.<br><br>
-                        * Du suchst hier leider an der falschen Stelle.<br><br>
-                        <img src="bahnhof.de.png" alt="QR Code" class="qr-code-placeholder">
-                        Von Anton und Felix.
-                        Bei Feedback und Änderungsvorschlägen siehe <a href="https://github.com/felixdivo/c3-fahrplan-druck" target="_blank">github.com/felixdivo/c3-fahrplan-druck</a>.<br><br>
-
-                        Datenstand: ${formattedVersion}<br><br>
-
-                        ${footerText}
-                </div>
-        </div>`;
+                const renderLegend = (formattedVersion, footerText) => {
+                    const fragment = legendTemplate.content.cloneNode(true);
+                    const root = fragment.querySelector('.legend-root');
+                    const versionEl = fragment.querySelector('[data-legend-version]');
+                    const footerEl = fragment.querySelector('[data-legend-footer-text]');
+                    if (versionEl) versionEl.textContent = formattedVersion;
+                    if (footerEl) footerEl.textContent = footerText;
+                    return root;
+                };
 
                 const formattedVersion = formatVersion(data.schedule.version || 'unknown');
                 const errorMsg = `Keine Inhalte für Tag ${selectedDay} gefunden. Versuchen Sie z.B. ?only-day=0 oder ?only-day=2 in der URL.`;
@@ -366,19 +382,19 @@
                     // Multi-day view: render all talks grouped by day
                     const allTalks = collectAndSortTalks(data.schedule.conference.days, true);
 
-                    departureTable.innerHTML = '';
+                    departureTableContent.innerHTML = '';
                     let currentDay = null;
                     allTalks.forEach((row) => {
                         if (currentDay !== row.dayIndex) {
                             currentDay = row.dayIndex;
-                            departureTable.insertAdjacentHTML('beforeend', renderHeaderGroup(`Day ${row.dayIndex}`, row));
+                            departureTableContent.insertAdjacentHTML('beforeend', renderHeaderGroup(`Day ${row.dayIndex}`, row));
                         } else {
-                            departureTable.insertAdjacentHTML('beforeend', renderRow(row));
+                            departureTableContent.insertAdjacentHTML('beforeend', renderRow(row));
                         }
                     });
 
                     const legend = renderLegend(formattedVersion, `Dieses Fahplan ist bis Tag ${totalDays} (17:00) Eigentum der Chaosland Bahn. Danach geht er in die chaotische Selbstverwaltung über und darf legal entwendet werden.`);
-                    departureTable.insertAdjacentHTML('beforeend', legend);
+                    departureTableContent.appendChild(legend);
                 } else {
                     // Single-day view: render talks for selected day grouped by time range
                     const dayObj = data?.schedule?.conference?.days?.find((d) => d.index === selectedDay);
@@ -399,15 +415,15 @@
                         headerLeft.textContent = `${day}.${month}.${year} — Tag ${selectedDay}`;
                     }
 
-                    departureTable.innerHTML = '';
+                    departureTableContent.innerHTML = '';
                     let currentRange = null;
                     dayTalks.forEach((row) => {
                         const rangeLabel = getTimeRangeLabel(row.start);
                         if (rangeLabel && rangeLabel !== currentRange) {
                             currentRange = rangeLabel;
-                            departureTable.insertAdjacentHTML('beforeend', renderHeaderGroup(rangeLabel, row));
+                            departureTableContent.insertAdjacentHTML('beforeend', renderHeaderGroup(rangeLabel, row));
                         } else {
-                            departureTable.insertAdjacentHTML('beforeend', renderRow(row));
+                            departureTableContent.insertAdjacentHTML('beforeend', renderRow(row));
                         }
                     });
 
@@ -416,7 +432,7 @@
                         : `Nimm mich ab Tag ${selectedDay + 1} mit, aber lass das Klebeband da.`;
 
                     const legend = renderLegend(formattedVersion, takeWithText);
-                    departureTable.insertAdjacentHTML('beforeend', legend);
+                    departureTableContent.appendChild(legend);
                 }
 
                 if (window.lucide) window.lucide.createIcons();

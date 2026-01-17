@@ -236,10 +236,13 @@ noscript {
 
 .departure-table {
     display: block;
+    border-bottom: 1px solid #000;
+}
+
+.departure-table-content {
     column-count: var(--columns);
     column-gap: 12px;
     column-fill: balance;
-    border-bottom: 1px solid #000;
 }
 
 .no-data,
