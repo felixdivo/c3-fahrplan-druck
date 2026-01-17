@@ -118,325 +118,325 @@
         <div class="departure-table-content"></div>
     </div>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-        <script>
-            (async () => {
-                // Event-specific configuration
-                const scheduleUrl = 'https://api.events.ccc.de/congress/2025/schedule.json';
-                const trackMap = {
-                    'Art & Beauty': 'ART',
-                    'CCC & Community': 'CCC',
-                    'Entertainment': 'FUN',
-                    'Ethics, Society & Politics': 'ESP',
-                    'Hardware': 'HARD',
-                    'Science': 'SCI',
-                    'Security': 'SEC',
-                    'DJ-Set': 'DJ',
-                    'Live Performance': 'LP',
-                    null: 'NAT',
-                    undefined: 'NAT',
-                };
-                const totalDays = 4;
-                const headerDateRange = '27.12.2025 – 30.12.2025';
-                const stationName = 'Chaos Communication Congress';
-                const timeRanges = [
-                    { start: 9, end: 11, label: '9.00 — 11.00' },
-                    { start: 12, end: 13, label: '12.00 — 13.00' },
-                    { start: 14, end: 15, label: '14.00 — 15.00' },
-                    { start: 16, end: 18, label: '16.00 — 18.00' },
-                    { start: 19, end: 20, label: '19.00 — 20.00' },
-                    { start: 21, end: 22, label: '21.00 — 22.00' },
-                    { start: 23, end: 1, label: '23.00 — 01.00' },
-                    { start: 2, end: 4, label: '02.00 — 04.00' },
-                    { start: 5, end: 8, label: '05.00 — 08.00' },
-                ];
+    <script>
+        (async () => {
+            // Event-specific configuration
+            const scheduleUrl = 'https://api.events.ccc.de/congress/2025/schedule.json';
+            const trackMap = {
+                'Art & Beauty': 'ART',
+                'CCC & Community': 'CCC',
+                'Entertainment': 'FUN',
+                'Ethics, Society & Politics': 'ESP',
+                'Hardware': 'HARD',
+                'Science': 'SCI',
+                'Security': 'SEC',
+                'DJ-Set': 'DJ',
+                'Live Performance': 'LP',
+                null: 'NAT',
+                undefined: 'NAT',
+            };
+            const totalDays = 4;
+            const headerDateRange = '27.12.2025 – 30.12.2025';
+            const stationName = 'Chaos Communication Congress';
+            const timeRanges = [
+                { start: 9, end: 11, label: '9.00 — 11.00' },
+                { start: 12, end: 13, label: '12.00 — 13.00' },
+                { start: 14, end: 15, label: '14.00 — 15.00' },
+                { start: 16, end: 18, label: '16.00 — 18.00' },
+                { start: 19, end: 20, label: '19.00 — 20.00' },
+                { start: 21, end: 22, label: '21.00 — 22.00' },
+                { start: 23, end: 1, label: '23.00 — 01.00' },
+                { start: 2, end: 4, label: '02.00 — 04.00' },
+                { start: 5, end: 8, label: '05.00 — 08.00' },
+            ];
 
-                // Room abbreviations/icons
-                const roomAbbrevMap = {
-                    'One': '1',
-                    'Fuse': 'F',
-                    'Ground': 'G',
-                    'Zero': 'Z',
-                    'SoS Saal 6': '6',
-                    'House of Tea': '<i data-lucide="coffee"></i>',
-                    'Chaos Computer Music Club': '<i data-lucide="music"></i>',
-                    'Chill Floor': '<i data-lucide="armchair"></i>',
-                    'Komonin': '<i data-lucide="door-open"></i>'
-                };
-                const roomAbbrevPartial = {
-                    'Stonewall IO': 'Y',
-                    'Hardware Hacking Area': '<i data-lucide="wrench"></i>',
-                    'Bits&Bäume': '<i data-lucide="trees"></i>',
-                    'Sendezentrum': '<i data-lucide="mic-vocal"></i>'
-                };
+            // Room abbreviations/icons
+            const roomAbbrevMap = {
+                'One': '1',
+                'Fuse': 'F',
+                'Ground': 'G',
+                'Zero': 'Z',
+                'SoS Saal 6': '6',
+                'House of Tea': '<i data-lucide="coffee"></i>',
+                'Chaos Computer Music Club': '<i data-lucide="music"></i>',
+                'Chill Floor': '<i data-lucide="armchair"></i>',
+                'Komonin': '<i data-lucide="door-open"></i>'
+            };
+            const roomAbbrevPartial = {
+                'Stonewall IO': 'Y',
+                'Hardware Hacking Area': '<i data-lucide="wrench"></i>',
+                'Bits&Bäume': '<i data-lucide="trees"></i>',
+                'Sendezentrum': '<i data-lucide="mic-vocal"></i>'
+            };
 
-                // URL parameter parsing
-                const params = new URLSearchParams(location.search);
-                const onlyDayParam = params.get('only-day');
-                const onlyTrackParam = params.get('only-track');
-                const onlyRoomParam = params.get('only-room');
-                const tintedBackgroundParam = params.get('tinted-background');
-                const columnsRaw = params.get('columns') ?? '8';
-                const columnsParam = parseInt(columnsRaw, 10);
-                const isSingleDay = onlyDayParam !== null;
-                const selectedDay = parseInt(onlyDayParam ?? '1', 10);
+            // URL parameter parsing
+            const params = new URLSearchParams(location.search);
+            const onlyDayParam = params.get('only-day');
+            const onlyTrackParam = params.get('only-track');
+            const onlyRoomParam = params.get('only-room');
+            const tintedBackgroundParam = params.get('tinted-background');
+            const columnsRaw = params.get('columns') ?? '8';
+            const columnsParam = parseInt(columnsRaw, 10);
+            const isSingleDay = onlyDayParam !== null;
+            const selectedDay = parseInt(onlyDayParam ?? '1', 10);
 
-                // Apply column count + derived page width
-                const isMobileColumns = columnsRaw.toLowerCase() === 'mobile';
-                const columns = isMobileColumns ? 1 : (Number.isFinite(columnsParam) && columnsParam > 0 ? columnsParam : 8);
-                const baseColumns = 8;
-                const basePageWidthMm = 914.4;
-                const pageWidthMm = (basePageWidthMm / baseColumns) * columns;
-                document.documentElement.style.setProperty('--columns', columns);
-                document.documentElement.style.setProperty('--page-width', isMobileColumns ? '100vw' : `${pageWidthMm}mm`);
-                document.body.classList.toggle('mobile-columns', isMobileColumns);
+            // Apply column count + derived page width
+            const isMobileColumns = columnsRaw.toLowerCase() === 'mobile';
+            const columns = isMobileColumns ? 1 : (Number.isFinite(columnsParam) && columnsParam > 0 ? columnsParam : 8);
+            const baseColumns = 8;
+            const basePageWidthMm = 914.4;
+            const pageWidthMm = (basePageWidthMm / baseColumns) * columns;
+            document.documentElement.style.setProperty('--columns', columns);
+            document.documentElement.style.setProperty('--page-width', isMobileColumns ? '100vw' : `${pageWidthMm}mm`);
+            document.body.classList.toggle('mobile-columns', isMobileColumns);
 
-                // Handle tinted-background parameter
-                if (tintedBackgroundParam ==='false') {
-                    document.body.classList.remove('tinted-background');
+            // Handle tinted-background parameter
+            if (tintedBackgroundParam ==='false') {
+                document.body.classList.remove('tinted-background');
+            }
+
+            // DOM hooks
+            const headerLeft = document.querySelector('.header > div:first-child');
+            const stationNameEl = document.querySelector('.station-name');
+            const columnHeadersWrapper = document.querySelector('#column-headers-wrapper');
+            const columnHeadersTemplate = document.querySelector('#column-headers-template');
+            const legendTemplate = document.querySelector('#legend-template');
+            const departureTable = document.querySelector('.departure-table');
+            const departureTableContent = document.querySelector('.departure-table-content');
+            if (!departureTable || !departureTableContent || !columnHeadersWrapper || !columnHeadersTemplate || !legendTemplate) return;
+
+            // Render column headers to match column count
+            columnHeadersWrapper.innerHTML = '';
+            for (let i = 0; i < columns; i += 1) {
+                columnHeadersWrapper.appendChild(columnHeadersTemplate.content.cloneNode(true));
+            }
+
+            // Apply header labels
+            if (headerLeft && headerDateRange) headerLeft.textContent = headerDateRange;
+            if (stationNameEl && stationName) stationNameEl.textContent = stationName;
+
+            // Build active filter label text
+            const filterLabelParts = [];
+            if (onlyRoomParam) filterLabelParts.push(onlyRoomParam);
+
+            const findTrackDisplay = (trackParam) => {
+                if (!trackParam) return null;
+                const target = trackParam.toLowerCase();
+                const match = Object.entries(trackMap).find(([key, code]) => 
+                    (key || '').toLowerCase() === target || (code || '').toLowerCase() === target
+                );
+                return match ? match[0] : trackParam;
+            };
+
+            const trackDisplay = findTrackDisplay(onlyTrackParam);
+            if (trackDisplay) filterLabelParts.push(trackDisplay);
+            if (stationNameEl && filterLabelParts.length) {
+                stationNameEl.textContent = `${stationName} — ${filterLabelParts.join(' — ')}`;
+            }
+
+            // Filter predicates with cached targets
+            const trackTarget = onlyTrackParam?.toLowerCase();
+            const roomTarget = onlyRoomParam?.toLowerCase();
+            const passesFilters = (talk, roomName) => {
+                if (trackTarget) {
+                    const trackRaw = (talk.track || '').toString().toLowerCase();
+                    const trackCode = (trackMap[talk.track] || '').toLowerCase();
+                    if (trackRaw !== trackTarget && trackCode !== trackTarget) return false;
                 }
+                if (roomTarget && !roomName.toLowerCase().match(new RegExp(roomTarget))) return false;
+                return true;
+            };
 
-                // DOM hooks
-                const headerLeft = document.querySelector('.header > div:first-child');
-                const stationNameEl = document.querySelector('.station-name');
-                const columnHeadersWrapper = document.querySelector('#column-headers-wrapper');
-                const columnHeadersTemplate = document.querySelector('#column-headers-template');
-                const legendTemplate = document.querySelector('#legend-template');
-                const departureTable = document.querySelector('.departure-table');
-                const departureTableContent = document.querySelector('.departure-table-content');
-                if (!departureTable || !departureTableContent || !columnHeadersWrapper || !columnHeadersTemplate || !legendTemplate) return;
+            const showError = (msg) => {
+                departureTableContent.innerHTML = `<div class="no-data">${msg}</div>`;
+            };
+            departureTableContent.innerHTML = '<div class="loading">Lade Inhalte…</div>';
 
-                // Render column headers to match column count
-                columnHeadersWrapper.innerHTML = '';
-                for (let i = 0; i < columns; i += 1) {
-                    columnHeadersWrapper.appendChild(columnHeadersTemplate.content.cloneNode(true));
+            // Fetch schedule data
+            let data;
+            try {
+                const res = await fetch(scheduleUrl);
+                data = await res.json();
+            } catch (e) {
+                showError('Daten konnten nicht geladen werden. Bitte Verbindung prüfen.');
+                return;
+            }
+
+            const toMinutes = (hhmm) => parseInt(hhmm.slice(0, 2), 10) * 60 + parseInt(hhmm.slice(-2), 10);
+            const toHours = (mins) => `${String(Math.floor(mins / 60) % 24).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+            const timeForSort = (hhmm) => {
+                const mins = toMinutes(hhmm);
+                return mins < 360 ? mins + (24 * 60) : mins;
+            };
+
+            const abbreviateRoom = (roomName) => {
+                if (roomAbbrevMap[roomName]) return roomAbbrevMap[roomName];
+                for (const [key, val] of Object.entries(roomAbbrevPartial)) {
+                    if (roomName.includes(key)) return val;
                 }
+                if (/^SoS (Stage|Lecture|Workshop) /.test(roomName)) return roomName.split(' ').pop();
+                if (roomName.startsWith('Kidspace')) return '<i data-lucide="toy-brick"></i>';
+                return '*';
+            };
 
-                // Apply header labels
-                if (headerLeft && headerDateRange) headerLeft.textContent = headerDateRange;
-                if (stationNameEl && stationName) stationNameEl.textContent = stationName;
+            // Version string formatting for legend footer
+            const formatVersion = (dataVersion) => {
+                const input = dataVersion || 'unknown';
+                const dateMatch = input.match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}:\d{2}(?::\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?)/);
+                const versionTokenMatch = input.match(/Version\s+([^;\s]+)/i);
+                const versionToken = versionTokenMatch?.[1] || input.split(/[^\w.]+/).filter(Boolean)[0] || '';
 
-                // Build active filter label text
-                const filterLabelParts = [];
-                if (onlyRoomParam) filterLabelParts.push(onlyRoomParam);
+                if (dateMatch) {
+                    const [, year, month, day, time] = dateMatch;
+                    const timeNoTZ = time.replace(/(Z|[+-]\d{2}:?\d{2})$/, '');
+                    const dateStr = `${day}.${month}.${year} ${timeNoTZ}`;
+                    return versionToken ? `v${versionToken} vom ${dateStr}` : dateStr;
+                }
+                return versionToken ? `v${versionToken}` : input;
+            };
 
-                const findTrackDisplay = (trackParam) => {
-                    if (!trackParam) return null;
-                    const target = trackParam.toLowerCase();
-                    const match = Object.entries(trackMap).find(([key, code]) => 
-                        (key || '').toLowerCase() === target || (code || '').toLowerCase() === target
-                    );
-                    return match ? match[0] : trackParam;
+            // Render one schedule row
+            const renderRow = (row, trackCodeOverride = null) => {
+                const duration = toMinutes(row.duration);
+                const speaker = (row.persons || []).map(p => p.name).join(', ') || '<em>no speaker found</em>';
+                let trackCode = trackCodeOverride || trackMap[row.track] || 'NAT';
+                if (row.roomName.startsWith('Kidspace')) trackCode = 'KID';
+
+                const roomAbbrev = abbreviateRoom(row.roomName);
+                const trainId = row.id.toString().substring(0, 5);
+                const trainClass = ['1', 'Z', 'F', 'G'].includes(roomAbbrev) ? ' train-number-red' : '';
+                const longNumClass = trainId.length > 2 ? ' train-num-long' : '';
+                const roomNameDisplay = roomAbbrev.includes('*') ? ` <span class="room-name">* ${row.roomName}</span>` : '';
+
+                // Render recording icon
+                const recordingIconHTML = (doNotRecord, slug) => {
+                    if (doNotRecord === false) return `<a class="no-video-icon" href="https://media.ccc.de/v/${slug}"><i data-lucide="video"></i></a>`;
+                    if (doNotRecord === true) return '<a class="no-video-icon"><i data-lucide="video-off"></i></a>';
+                    return '';
                 };
 
-                const trackDisplay = findTrackDisplay(onlyTrackParam);
-                if (trackDisplay) filterLabelParts.push(trackDisplay);
-                if (stationNameEl && filterLabelParts.length) {
-                    stationNameEl.textContent = `${stationName} — ${filterLabelParts.join(' — ')}`;
-                }
+                return `
+        <div class="departure-row">
+            <div class="time">${row.start}</div>
+            <div class="trains">
+                <div class="train-number${trainClass}"><span class="train-prefix">${trackCode}</span>&#8239;<span class="train-num${longNumClass}">${trainId}</span></div>
+                ${recordingIconHTML(row.do_not_record, row.slug)}
+            </div>
+            <div class="route">
+                <span class="destination"><a href="${row.url}">${row.title}</a><span class="destination-icon">&#8239;<i data-lucide="circle-dot"></i></span></span>
+                <span class="station">${speaker}</span>
+                <span class="station-time">(&#8239;→&#8239;${toHours(toMinutes(row.start) + duration)}&#8239;)${roomNameDisplay}</span>
+            </div>
+            <div class="row-number">${roomAbbrev}</div>
+        </div>`;
+            };
 
-                // Filter predicates with cached targets
-                const trackTarget = onlyTrackParam?.toLowerCase();
-                const roomTarget = onlyRoomParam?.toLowerCase();
-                const passesFilters = (talk, roomName) => {
-                    if (trackTarget) {
-                        const trackRaw = (talk.track || '').toString().toLowerCase();
-                        const trackCode = (trackMap[talk.track] || '').toLowerCase();
-                        if (trackRaw !== trackTarget && trackCode !== trackTarget) return false;
+            const getTimeRangeLabel = (time) => {
+                const hour = Math.floor(toMinutes(time) / 60) % 24;
+                return timeRanges.find(r => r.start <= r.end ? (hour >= r.start && hour <= r.end) : (hour >= r.start || hour <= r.end))?.label ?? null;
+            };
+
+            // Legend HTML
+            const renderLegend = (formattedVersion, footerText) => {
+                const fragment = legendTemplate.content.cloneNode(true);
+                const root = fragment.querySelector('.legend-root');
+                const versionEl = fragment.querySelector('[data-legend-version]');
+                const footerEl = fragment.querySelector('[data-legend-footer-text]');
+                if (versionEl) versionEl.textContent = formattedVersion;
+                if (footerEl) footerEl.textContent = footerText;
+                return root;
+            };
+
+            const formattedVersion = formatVersion(data.schedule.version || 'unknown');
+            const errorMsg = `Keine Inhalte für Tag ${selectedDay} gefunden. Versuchen Sie z.B. ?only-day=0 oder ?only-day=2 in der URL.`;
+
+            // Helper to render header and first row in group
+            const renderHeaderGroup = (label, row) => {
+                const headerHTML = `<div class="time-range"><div></div><div></div><div>${label}</div><div></div></div>`;
+                return `<div class="time-range-group">${headerHTML}${renderRow(row)}</div>`;
+            };
+
+            // Collect and sort talks from specified days
+            const collectAndSortTalks = (days, includeDay = true) => {
+                const talks = [];
+                days.forEach((day) => {
+                    Object.entries(day.rooms).forEach(([roomName, roomTalks]) => {
+                        roomTalks.forEach((talk) => {
+                            if (passesFilters(talk, roomName)) {
+                                talks.push({ ...talk, dayIndex: day.index, roomName });
+                            }
+                        });
+                    });
+                });
+                talks.sort((a, b) => {
+                    if (includeDay && a.dayIndex !== b.dayIndex) return a.dayIndex - b.dayIndex;
+                    const aTime = timeForSort(a.start);
+                    const bTime = timeForSort(b.start);
+                    if (aTime !== bTime) return aTime - bTime;
+                    return a.roomName.localeCompare(b.roomName);
+                });
+                return talks;
+            };
+
+            if (!isSingleDay) {
+                // Multi-day view: render all talks grouped by day
+                const allTalks = collectAndSortTalks(data.schedule.conference.days, true);
+
+                departureTableContent.innerHTML = '';
+                let currentDay = null;
+                allTalks.forEach((row) => {
+                    if (currentDay !== row.dayIndex) {
+                        currentDay = row.dayIndex;
+                        departureTableContent.insertAdjacentHTML('beforeend', renderHeaderGroup(`Day ${row.dayIndex}`, row));
+                    } else {
+                        departureTableContent.insertAdjacentHTML('beforeend', renderRow(row));
                     }
-                    if (roomTarget && !roomName.toLowerCase().match(new RegExp(roomTarget))) return false;
-                    return true;
-                };
+                });
 
-                const showError = (msg) => {
-                    departureTableContent.innerHTML = `<div class="no-data">${msg}</div>`;
-                };
-                departureTableContent.innerHTML = '<div class="loading">Lade Inhalte…</div>';
-
-                // Fetch schedule data
-                let data;
-                try {
-                    const res = await fetch(scheduleUrl);
-                    data = await res.json();
-                } catch (e) {
-                    showError('Daten konnten nicht geladen werden. Bitte Verbindung prüfen.');
+                const legend = renderLegend(formattedVersion, `Dieses Fahplan ist bis Tag ${totalDays} (17:00) Eigentum der Chaosland Bahn. Danach geht er in die chaotische Selbstverwaltung über und darf legal entwendet werden.`);
+                departureTableContent.appendChild(legend);
+            } else {
+                // Single-day view: render talks for selected day grouped by time range
+                const dayObj = data?.schedule?.conference?.days?.find((d) => d.index === selectedDay);
+                if (!dayObj) {
+                    showError(errorMsg);
                     return;
                 }
 
-                const toMinutes = (hhmm) => parseInt(hhmm.slice(0, 2), 10) * 60 + parseInt(hhmm.slice(-2), 10);
-                const toHours = (mins) => `${String(Math.floor(mins / 60) % 24).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
-                const timeForSort = (hhmm) => {
-                    const mins = toMinutes(hhmm);
-                    return mins < 360 ? mins + (24 * 60) : mins;
-                };
-
-                const abbreviateRoom = (roomName) => {
-                    if (roomAbbrevMap[roomName]) return roomAbbrevMap[roomName];
-                    for (const [key, val] of Object.entries(roomAbbrevPartial)) {
-                        if (roomName.includes(key)) return val;
-                    }
-                    if (/^SoS (Stage|Lecture|Workshop) /.test(roomName)) return roomName.split(' ').pop();
-                    if (roomName.startsWith('Kidspace')) return '<i data-lucide="toy-brick"></i>';
-                    return '*';
-                };
-
-                // Version string formatting for legend footer
-                const formatVersion = (dataVersion) => {
-                    const input = dataVersion || 'unknown';
-                    const dateMatch = input.match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}:\d{2}(?::\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?)/);
-                    const versionTokenMatch = input.match(/Version\s+([^;\s]+)/i);
-                    const versionToken = versionTokenMatch?.[1] || input.split(/[^\w.]+/).filter(Boolean)[0] || '';
-
-                    if (dateMatch) {
-                        const [, year, month, day, time] = dateMatch;
-                        const timeNoTZ = time.replace(/(Z|[+-]\d{2}:?\d{2})$/, '');
-                        const dateStr = `${day}.${month}.${year} ${timeNoTZ}`;
-                        return versionToken ? `v${versionToken} vom ${dateStr}` : dateStr;
-                    }
-                    return versionToken ? `v${versionToken}` : input;
-                };
-
-                // Render one schedule row
-                const renderRow = (row, trackCodeOverride = null) => {
-                    const duration = toMinutes(row.duration);
-                    const speaker = (row.persons || []).map(p => p.name).join(', ') || '<em>no speaker found</em>';
-                    let trackCode = trackCodeOverride || trackMap[row.track] || 'NAT';
-                    if (row.roomName.startsWith('Kidspace')) trackCode = 'KID';
-
-                    const roomAbbrev = abbreviateRoom(row.roomName);
-                    const trainId = row.id.toString().substring(0, 5);
-                    const trainClass = ['1', 'Z', 'F', 'G'].includes(roomAbbrev) ? ' train-number-red' : '';
-                    const longNumClass = trainId.length > 2 ? ' train-num-long' : '';
-                    const roomNameDisplay = roomAbbrev.includes('*') ? ` <span class="room-name">* ${row.roomName}</span>` : '';
-
-                    // Render recording icon
-                    const recordingIconHTML = (doNotRecord, slug) => {
-                        if (doNotRecord === false) return `<a class="no-video-icon" href="https://media.ccc.de/v/${slug}"><i data-lucide="video"></i></a>`;
-                        if (doNotRecord === true) return '<a class="no-video-icon"><i data-lucide="video-off"></i></a>';
-                        return '';
-                    };
-
-                    return `
-            <div class="departure-row">
-                <div class="time">${row.start}</div>
-                <div class="trains">
-                    <div class="train-number${trainClass}"><span class="train-prefix">${trackCode}</span>&#8239;<span class="train-num${longNumClass}">${trainId}</span></div>
-                    ${recordingIconHTML(row.do_not_record, row.slug)}
-                </div>
-                <div class="route">
-                    <span class="destination"><a href="${row.url}">${row.title}</a><span class="destination-icon">&#8239;<i data-lucide="circle-dot"></i></span></span>
-                    <span class="station">${speaker}</span>
-                    <span class="station-time">(&#8239;→&#8239;${toHours(toMinutes(row.start) + duration)}&#8239;)${roomNameDisplay}</span>
-                </div>
-                <div class="row-number">${roomAbbrev}</div>
-            </div>`;
-                };
-
-                const getTimeRangeLabel = (time) => {
-                    const hour = Math.floor(toMinutes(time) / 60) % 24;
-                    return timeRanges.find(r => r.start <= r.end ? (hour >= r.start && hour <= r.end) : (hour >= r.start || hour <= r.end))?.label ?? null;
-                };
-
-                // Legend HTML
-                const renderLegend = (formattedVersion, footerText) => {
-                    const fragment = legendTemplate.content.cloneNode(true);
-                    const root = fragment.querySelector('.legend-root');
-                    const versionEl = fragment.querySelector('[data-legend-version]');
-                    const footerEl = fragment.querySelector('[data-legend-footer-text]');
-                    if (versionEl) versionEl.textContent = formattedVersion;
-                    if (footerEl) footerEl.textContent = footerText;
-                    return root;
-                };
-
-                const formattedVersion = formatVersion(data.schedule.version || 'unknown');
-                const errorMsg = `Keine Inhalte für Tag ${selectedDay} gefunden. Versuchen Sie z.B. ?only-day=0 oder ?only-day=2 in der URL.`;
-
-                // Helper to render header and first row in group
-                const renderHeaderGroup = (label, row) => {
-                    const headerHTML = `<div class="time-range"><div></div><div></div><div>${label}</div><div></div></div>`;
-                    return `<div class="time-range-group">${headerHTML}${renderRow(row)}</div>`;
-                };
-
-                // Collect and sort talks from specified days
-                const collectAndSortTalks = (days, includeDay = true) => {
-                    const talks = [];
-                    days.forEach((day) => {
-                        Object.entries(day.rooms).forEach(([roomName, roomTalks]) => {
-                            roomTalks.forEach((talk) => {
-                                if (passesFilters(talk, roomName)) {
-                                    talks.push({ ...talk, dayIndex: day.index, roomName });
-                                }
-                            });
-                        });
-                    });
-                    talks.sort((a, b) => {
-                        if (includeDay && a.dayIndex !== b.dayIndex) return a.dayIndex - b.dayIndex;
-                        const aTime = timeForSort(a.start);
-                        const bTime = timeForSort(b.start);
-                        if (aTime !== bTime) return aTime - bTime;
-                        return a.roomName.localeCompare(b.roomName);
-                    });
-                    return talks;
-                };
-
-                if (!isSingleDay) {
-                    // Multi-day view: render all talks grouped by day
-                    const allTalks = collectAndSortTalks(data.schedule.conference.days, true);
-
-                    departureTableContent.innerHTML = '';
-                    let currentDay = null;
-                    allTalks.forEach((row) => {
-                        if (currentDay !== row.dayIndex) {
-                            currentDay = row.dayIndex;
-                            departureTableContent.insertAdjacentHTML('beforeend', renderHeaderGroup(`Day ${row.dayIndex}`, row));
-                        } else {
-                            departureTableContent.insertAdjacentHTML('beforeend', renderRow(row));
-                        }
-                    });
-
-                    const legend = renderLegend(formattedVersion, `Dieses Fahplan ist bis Tag ${totalDays} (17:00) Eigentum der Chaosland Bahn. Danach geht er in die chaotische Selbstverwaltung über und darf legal entwendet werden.`);
-                    departureTableContent.appendChild(legend);
-                } else {
-                    // Single-day view: render talks for selected day grouped by time range
-                    const dayObj = data?.schedule?.conference?.days?.find((d) => d.index === selectedDay);
-                    if (!dayObj) {
-                        showError(errorMsg);
-                        return;
-                    }
-
-                    const dayTalks = collectAndSortTalks([dayObj], false);
-                    if (!dayTalks.length) {
-                        showError(errorMsg);
-                        return;
-                    }
-
-
-                    if (headerLeft) {
-                        const [year, month, day] = (dayObj.date || '').split('-');
-                        headerLeft.textContent = `${day}.${month}.${year} — Tag ${selectedDay}`;
-                    }
-
-                    departureTableContent.innerHTML = '';
-                    let currentRange = null;
-                    dayTalks.forEach((row) => {
-                        const rangeLabel = getTimeRangeLabel(row.start);
-                        if (rangeLabel && rangeLabel !== currentRange) {
-                            currentRange = rangeLabel;
-                            departureTableContent.insertAdjacentHTML('beforeend', renderHeaderGroup(rangeLabel, row));
-                        } else {
-                            departureTableContent.insertAdjacentHTML('beforeend', renderRow(row));
-                        }
-                    });
-
-                    const takeWithText = selectedDay === totalDays
-                        ? 'Nimm mich beim Abbau mit.'
-                        : `Nimm mich ab Tag ${selectedDay + 1} mit, aber lass das Klebeband da.`;
-
-                    const legend = renderLegend(formattedVersion, takeWithText);
-                    departureTableContent.appendChild(legend);
+                const dayTalks = collectAndSortTalks([dayObj], false);
+                if (!dayTalks.length) {
+                    showError(errorMsg);
+                    return;
                 }
 
-                if (window.lucide) window.lucide.createIcons();
-            })();
-        </script>
+
+                if (headerLeft) {
+                    const [year, month, day] = (dayObj.date || '').split('-');
+                    headerLeft.textContent = `${day}.${month}.${year} — Tag ${selectedDay}`;
+                }
+
+                departureTableContent.innerHTML = '';
+                let currentRange = null;
+                dayTalks.forEach((row) => {
+                    const rangeLabel = getTimeRangeLabel(row.start);
+                    if (rangeLabel && rangeLabel !== currentRange) {
+                        currentRange = rangeLabel;
+                        departureTableContent.insertAdjacentHTML('beforeend', renderHeaderGroup(rangeLabel, row));
+                    } else {
+                        departureTableContent.insertAdjacentHTML('beforeend', renderRow(row));
+                    }
+                });
+
+                const takeWithText = selectedDay === totalDays
+                    ? 'Nimm mich beim Abbau mit.'
+                    : `Nimm mich ab Tag ${selectedDay + 1} mit, aber lass das Klebeband da.`;
+
+                const legend = renderLegend(formattedVersion, takeWithText);
+                departureTableContent.appendChild(legend);
+            }
+
+            if (window.lucide) window.lucide.createIcons();
+        })();
+    </script>
 </body>
 </html>
