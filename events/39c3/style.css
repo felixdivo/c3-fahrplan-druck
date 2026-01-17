@@ -73,7 +73,7 @@
 
 :root {
     --accent-color: #ff3719;
-    --tinted-background-color: gold;
+    --tinted-background-color: #f9a800; /* RAL 1003 Signalgelb/Signal Yellow */
     --row-header-bg-color: black;
     --column-headers-bg-color: #d0d0d0cc;
     --columns: 8;
