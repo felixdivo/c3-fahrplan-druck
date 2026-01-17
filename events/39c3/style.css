@@ -73,6 +73,9 @@
 
 :root {
     --accent-color: #ff3719;
+    --tinted-background-color: gold;
+    --row-header-bg-color: black;
+    --column-headers-bg-color: #d0d0d0cc;
     --grid-cols-header: 56px 72px 1fr 36px;
     --grid-cols-content: 56px 72px 1fr 18px;
     --cell-padding: 2px 3px;
@@ -85,6 +88,10 @@ body {
     width: 914.4mm;
     margin: 0;
     overflow: visible;
+}
+
+body.tinted-background {
+    background-color: var(--tinted-background-color);
 }
 
 noscript {
@@ -130,7 +137,7 @@ noscript {
     grid-template-columns: var(--grid-cols-header);
     gap: 2px;
     padding: 7px 3px 6px 3px;
-    background-color: #d0d0d0;
+    background-color: var(--column-headers-bg-color);
     font-size: 12px;
     margin-bottom: 1px;
 }
@@ -154,7 +161,7 @@ noscript {
     grid-template-columns: 56px 72px 1fr 50px;
     gap: 2px;
     padding: 0 3px;
-    background-color: #000;
+    background-color: var(--row-header-bg-color);
     color: white;
     font-size: 16px;
     font-weight: bold;
@@ -209,7 +216,6 @@ noscript {
 .qr-code-placeholder {
     width: 80px;
     height: 80px;
-    background-color: #f5f5f5;
     float: right;
     margin-left: 12px;
 }
@@ -245,7 +251,7 @@ noscript {
     font-size: 18px;
     font-weight: bold;
     line-height: 1;
-    background: #e8e8e8;
+    background: var(--column-headers-bg-color);
     padding: var(--cell-padding);
 }
 

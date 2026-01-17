@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="tinted-background">
     <noscript>JavaScript is required to render the schedule. Please enable it and reload.</noscript>
     <!-- Header -->
     <header class="header">
@@ -138,8 +138,14 @@
                 const onlyDayParam = params.get('only-day');
                 const onlyTrackParam = params.get('only-track');
                 const onlyRoomParam = params.get('only-room');
+                const tintedBackgroundParam = params.get('tinted-background');
                 const isSingleDay = onlyDayParam !== null;
                 const selectedDay = parseInt(onlyDayParam ?? '1', 10);
+
+                // Handle tinted-background parameter
+                if (tintedBackgroundParam ==='false') {
+                    document.body.classList.remove('tinted-background');
+                }
 
                 // DOM hooks
                 const headerLeft = document.querySelector('.header > div:first-child');

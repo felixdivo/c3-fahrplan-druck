@@ -11,6 +11,7 @@ The [Fahrplan](https://fahrplan.events.ccc.de/congress/2025/fahrplan) in the sty
    - `only-day=<n>`: Render a single conference day (e.g., `only-day=1`). Days use the indices from the JSON feed (see below; currently 0–4). Omit to show all days in one sheet.
    - `only-track=<nameOrCode>`: Filter by track. Accepts full track names or the short codes from the track map (see table). Examples: `only-track=Science`, `only-track=SCI`.
    - `only-room=<room>`: Filter by room, case-insensitively (e.g., `only-room=Stonewall IO`). Abbreviations are intentionally not supported, but substrings work (e.g., `only-room=Stonewall`).
+   - `tinted-background=false`: Disable the default yellow-tinted background color.
 3) Parameters can be combined, e.g., `?only-day=2&only-track=SCI`.
 
 ## Single-day vs. all-days view
@@ -22,7 +23,7 @@ The [Fahrplan](https://fahrplan.events.ccc.de/congress/2025/fahrplan) in the sty
 
 We had some issues printing this to PDF if the size grows beyond DIN A0+. However, directly using the system (not the browser-provided) printing dialog and saving that as PDF or directly printing from that worked for us.
 
-We strongly recommend directly using yellow paper for physical prints.
+We strongly recommend directly using yellow paper for physical prints (and setting `tinted-background=false`).
 
 ## Contributing new events
 
