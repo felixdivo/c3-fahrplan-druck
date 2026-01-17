@@ -22,7 +22,7 @@ The [Fahrplan](https://fahrplan.events.ccc.de/congress/2025/fahrplan) in the sty
 
 We had some issues printing this to PDF if the size grows beyond DIN A0+. However, directly using the system (not the browser-provided) printing dialog and saving that as PDF or directly printing from that worked for us.
 
-We strongly recommend directly using yellow paper for physical prints (and setting `tinted-background=false`).
+We strongly recommend directly using yellow paper (RAL 1003 Signalgelb/Signal Yellow) for physical prints (and setting `tinted-background=false`).
 
 ## Contributing new events
 
