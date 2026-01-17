@@ -11,6 +11,7 @@ The [Fahrplan](https://fahrplan.events.ccc.de/congress/2025/fahrplan) in the sty
 2) Append URL parameters to filter the rendered plan:
    - `only-day=<n>`: Render a single conference day (e.g., `only-day=1`). Days use the indices from the JSON feed (see below; currently 0–4). Omit to show all days in one sheet.
    - `only-track=<nameOrCode>`: Filter by track. Accepts full track names or the short codes from the track map (see table). Examples: `only-track=Science`, `only-track=SCI`.
+     Special modes as homage to their original meanings: `only-track=fahrplan` (main stage content only) and `only-track=abfahrplan` (music floors only), which override the `only-room` setting. 
    - `only-room=<room>`: Filter by room, case-insensitively (e.g., `only-room=Stonewall IO`). Abbreviations are intentionally not supported, but substrings work (e.g., `only-room=Stonewall`).
    - `tinted-background=false`: Disable the default yellow-tinted background color.
    - `columns=<n>`: Set the number of columns (e.g., `columns=1` for a single-column layout). The page width scales proportionally from the 8-column default.
@@ -46,6 +47,8 @@ Top-level constants near the start of each event's `index.html` control basic ev
 - `stationName`: Main title in the header area (also used when showing active filters).
 - `timeRanges`: Time-band labels for single-day grouping.
 - `roomAbbrevMap`: Exact room name to abbreviation/icon mapping.
+- `mainStageRoomAbbrevs`: Abbreviation list for main stage highlighting and `only-track=fahrplan` filtering.
+- `musicRoomNames`: Room name list used for `only-track=abfahrplan` filtering.
 - `roomAbbrevPartial`: Partial room name matches to abbreviation/icon mapping.
 
 For deeper layout or style tweaks, edit `index.html` and `style.css` directly.

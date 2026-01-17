@@ -162,6 +162,8 @@
                 'Chill Floor': '<i data-lucide="armchair"></i>',
                 'Komonin': '<i data-lucide="door-open"></i>'
             };
+            const mainStageRoomAbbrevs = ['1', 'Z', 'F', 'G'];
+            const musicRoomNames = ['Chaos Computer Music Club', 'Chill Floor'];
             const roomAbbrevPartial = {
                 'Stonewall IO': 'Y',
                 'Hardware Hacking Area': '<i data-lucide="wrench"></i>',
@@ -238,6 +240,12 @@
             const trackTarget = onlyTrackParam?.toLowerCase();
             const roomTarget = onlyRoomParam?.toLowerCase();
             const passesFilters = (talk, roomName) => {
+                if (trackTarget === 'fahrplan') {
+                    return mainStageRoomAbbrevs.includes(abbreviateRoom(roomName));
+                }
+                if (trackTarget === 'abfahrplan') {
+                    return musicRoomNames.some((name) => roomName.includes(name));
+                }
                 if (trackTarget) {
                     const trackRaw = (talk.track || '').toString().toLowerCase();
                     const trackCode = (trackMap[talk.track] || '').toLowerCase();
@@ -304,7 +312,7 @@
 
                 const roomAbbrev = abbreviateRoom(row.roomName);
                 const trainId = row.id.toString().substring(0, 5);
-                const trainClass = ['1', 'Z', 'F', 'G'].includes(roomAbbrev) ? ' train-number-red' : '';
+                const trainClass = mainStageRoomAbbrevs.includes(roomAbbrev) ? ' train-number-red' : '';
                 const longNumClass = trainId.length > 2 ? ' train-num-long' : '';
                 const roomNameDisplay = roomAbbrev.includes('*') ? ` <span class="room-name">* ${row.roomName}</span>` : '';
 
