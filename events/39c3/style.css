@@ -225,6 +225,7 @@ noscript {
     column-count: 8;
     column-gap: 12px;
     column-fill: balance;
+    border-bottom: 1px solid #000;
 }
 
 .no-data,
@@ -242,7 +243,7 @@ noscript {
     display: grid;
     grid-template-columns: var(--grid-cols-content);
     gap: 0 2px;
-    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
     align-items: stretch;
     break-inside: avoid;
 }
