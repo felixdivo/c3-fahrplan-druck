@@ -9,7 +9,7 @@ The [Fahrplan](https://fahrplan.events.ccc.de/congress/2025/fahrplan) in the sty
 
 1) Open `index.html` in a browser (no build steps needed).
 2) Append URL parameters to filter the rendered plan:
-   - `only-day=<n>`: Render a single conference day (e.g., `only-day=1`). Days use the indices from the JSON feed (see below; currently 0–4). Omit to show all days in one sheet.
+   - `only-day=<n>`: Render a single conference day (e.g., `only-day=1`). Days use the indices from the JSON feed (see below; currently 0–4). Omit to show all days in one sheet. This also switches from per-day headers to time-band grouping.
    - `only-track=<nameOrCode>`: Filter by track. Accepts full track names or the short codes from the track map (see table). Examples: `only-track=Science`, `only-track=SCI`.
      Special modes as homage to their original meanings: `only-track=fahrplan` (main stage content only) and `only-track=abfahrplan` (music floors only), which override the `only-room` setting. 
    - `only-room=<room>`: Filter by room, case-insensitively (e.g., `only-room=Stonewall IO`). Abbreviations are intentionally not supported, but substrings work (e.g., `only-room=Stonewall`).
@@ -17,11 +17,6 @@ The [Fahrplan](https://fahrplan.events.ccc.de/congress/2025/fahrplan) in the sty
    - `columns=<n>`: Set the number of columns (e.g., `columns=1` for a single-column layout). The page width scales proportionally from the 8-column default.
      The special mode `columns=mobile` enables a single-column view that uses the full device width.
 3) Parameters can be combined, e.g., `?only-day=2&only-track=SCI`.
-
-## Single-day vs. all-days view
-
-- Without parameters: renders all days sequentially with a day header and legend at the end.
-- With `only-day`: renders that day, groups rows into time bands, updates the header date, and adjusts the legend footer text accordingly.
 
 ## Printing
 
