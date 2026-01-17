@@ -56,8 +56,8 @@
 }
 
 @media print {
-  html, body {
-    width: 914.4mm;
+    html, body {
+        width: var(--page-width);
     height: auto;
     overflow: visible;
   }
@@ -76,6 +76,8 @@
     --tinted-background-color: gold;
     --row-header-bg-color: black;
     --column-headers-bg-color: #d0d0d0cc;
+    --columns: 8;
+    --page-width: 914.4mm;
     --grid-cols-header: 56px 72px 1fr 36px;
     --grid-cols-content: 56px 72px 1fr 18px;
     --cell-padding: 2px 3px;
@@ -85,9 +87,14 @@ body {
     font-family: 'OfficerSans', "Segoe UI", Arial, sans-serif;
     background-color: white;
     padding: 40px;
-    width: 914.4mm;
+    width: var(--page-width);
     margin: 0;
     overflow: visible;
+}
+
+body.mobile-columns {
+    width: 100vw;
+    padding: 16px;
 }
 
 body.tinted-background {
@@ -120,16 +127,23 @@ noscript {
 
 .title-section {
     display: flex;
-    gap: 60px;
+    column-gap: 60px;
+    row-gap: 12px;
     margin-bottom: 30px;
     font-size: 36px;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .title-label {
     display: flex;
     gap: 10px;
     align-items: baseline;
+}
+
+.station-name {
+    flex: 1 1 320px;
+    min-width: 0;
 }
 
 .column-headers {
@@ -144,7 +158,7 @@ noscript {
 
 .column-headers-wrapper {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(var(--columns), 1fr);
     column-gap: 12px;
     margin-bottom: 1px;
 }
@@ -222,7 +236,7 @@ noscript {
 
 .departure-table {
     display: block;
-    column-count: 8;
+    column-count: var(--columns);
     column-gap: 12px;
     column-fill: balance;
     border-bottom: 1px solid #000;

@@ -28,55 +28,15 @@
     </div>
 
     <!-- Column Headers - Repeated 8 times -->
-    <div class="column-headers-wrapper">
-        <div class="column-headers">
-            <div><b>Zeit</b><br><i>Time</i></div>
-            <div><b>Zug</b><br><i>Train</i></div>
-            <div><b>Richtung</b><br><i>Destination</i></div>
-            <div class="col-platform"><b>Gleis</b><br><i>Platform</i></div>
-        </div>
-        <div class="column-headers">
-            <div><b>Zeit</b><br><i>Time</i></div>
-            <div><b>Zug</b><br><i>Train</i></div>
-            <div><b>Richtung</b><br><i>Destination</i></div>
-            <div class="col-platform"><b>Gleis</b><br><i>Platform</i></div>
-        </div>
-        <div class="column-headers">
-            <div><b>Zeit</b><br><i>Time</i></div>
-            <div><b>Zug</b><br><i>Train</i></div>
-            <div><b>Richtung</b><br><i>Destination</i></div>
-            <div class="col-platform"><b>Gleis</b><br><i>Platform</i></div>
-        </div>
-        <div class="column-headers">
-            <div><b>Zeit</b><br><i>Time</i></div>
-            <div><b>Zug</b><br><i>Train</i></div>
-            <div><b>Richtung</b><br><i>Destination</i></div>
-            <div class="col-platform"><b>Gleis</b><br><i>Platform</i></div>
-        </div>
-        <div class="column-headers">
-            <div><b>Zeit</b><br><i>Time</i></div>
-            <div><b>Zug</b><br><i>Train</i></div>
-            <div><b>Richtung</b><br><i>Destination</i></div>
-            <div class="col-platform"><b>Gleis</b><br><i>Platform</i></div>
-        </div>
-        <div class="column-headers">
-            <div><b>Zeit</b><br><i>Time</i></div>
-            <div><b>Zug</b><br><i>Train</i></div>
-            <div><b>Richtung</b><br><i>Destination</i></div>
-            <div class="col-platform"><b>Gleis</b><br><i>Platform</i></div>
-        </div>
-        <div class="column-headers">
-            <div><b>Zeit</b><br><i>Time</i></div>
-            <div><b>Zug</b><br><i>Train</i></div>
-            <div><b>Richtung</b><br><i>Destination</i></div>
-            <div class="col-platform"><b>Gleis</b><br><i>Platform</i></div>
-        </div>
-        <div class="column-headers">
-            <div><b>Zeit</b><br><i>Time</i></div>
-            <div><b>Zug</b><br><i>Train</i></div>
-            <div><b>Richtung</b><br><i>Destination</i></div>
-            <div class="col-platform"><b>Gleis</b><br><i>Platform</i></div>
-        </div>
+    <div class="column-headers-wrapper" id="column-headers-wrapper">
+        <template id="column-headers-template">
+            <div class="column-headers">
+                <div><b>Zeit</b><br><i>Time</i></div>
+                <div><b>Zug</b><br><i>Train</i></div>
+                <div><b>Richtung</b><br><i>Destination</i></div>
+                <div class="col-platform"><b>Gleis</b><br><i>Platform</i></div>
+            </div>
+        </template>
     </div>
 
     <!-- Departure Rows -->
@@ -139,8 +99,20 @@
                 const onlyTrackParam = params.get('only-track');
                 const onlyRoomParam = params.get('only-room');
                 const tintedBackgroundParam = params.get('tinted-background');
+                const columnsRaw = params.get('columns') ?? '8';
+                const columnsParam = parseInt(columnsRaw, 10);
                 const isSingleDay = onlyDayParam !== null;
                 const selectedDay = parseInt(onlyDayParam ?? '1', 10);
+
+                // Apply column count + derived page width
+                const isMobileColumns = columnsRaw.toLowerCase() === 'mobile';
+                const columns = isMobileColumns ? 1 : (Number.isFinite(columnsParam) && columnsParam > 0 ? columnsParam : 8);
+                const baseColumns = 8;
+                const basePageWidthMm = 914.4;
+                const pageWidthMm = (basePageWidthMm / baseColumns) * columns;
+                document.documentElement.style.setProperty('--columns', columns);
+                document.documentElement.style.setProperty('--page-width', isMobileColumns ? '100vw' : `${pageWidthMm}mm`);
+                document.body.classList.toggle('mobile-columns', isMobileColumns);
 
                 // Handle tinted-background parameter
                 if (tintedBackgroundParam ==='false') {
@@ -150,8 +122,16 @@
                 // DOM hooks
                 const headerLeft = document.querySelector('.header > div:first-child');
                 const stationNameEl = document.querySelector('.station-name');
+                const columnHeadersWrapper = document.querySelector('#column-headers-wrapper');
+                const columnHeadersTemplate = document.querySelector('#column-headers-template');
                 const departureTable = document.querySelector('.departure-table');
-                if (!departureTable) return;
+                if (!departureTable || !columnHeadersWrapper || !columnHeadersTemplate) return;
+
+                // Render column headers to match column count
+                columnHeadersWrapper.innerHTML = '';
+                for (let i = 0; i < columns; i += 1) {
+                    columnHeadersWrapper.appendChild(columnHeadersTemplate.content.cloneNode(true));
+                }
 
                 // Apply header labels
                 if (headerLeft && headerDateRange) headerLeft.textContent = headerDateRange;
