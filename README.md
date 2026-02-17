@@ -1,3 +1,5 @@
+![Example Screenshot of the Fahrplan View](doc/example_screenshot.png)
+
 # c3-fahrplan-druck
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-mobile-blue?style=flat-square)](https://c3-fahrplan-druck.divo.link/events/39c3?columns=mobile)
@@ -48,3 +50,20 @@ Top-level constants near the start of each event's `index.html` control basic ev
 
 For deeper layout or style tweaks, edit `index.html` and `style.css` directly.
 If anything feels unclear, feel free to reach out (e.g., open an [issue](https://github.com/felixdivo/c3-fahrplan-druck/issues))!
+
+## Sister Projects
+
+*You are invited to add yours.*
+
+### *[tifa365/c3-abfahrtsmonitor](https://github.com/tifa365/c3-abfahrtsmonitor)* ([Live demo](https://tifa365.github.io/c3-abfahrtsmonitor/))
+
+[<img src="https://github.com/user-attachments/assets/79466644-d8b0-4c1b-979d-7bf29477aa0b" alt="tifa365/c3-abfahrtsmonitor screenshot" style="max-width: 400px;">](https://tifa365.github.io/c3-abfahrtsmonitor/)
+
+A live departure-board-style monitor for congress talks, showing delays, scrolling titles, and a news ticker. Great for displaying on screens during the event.
+
+### *[ccoors/typst-fahrplan](https://github.com/ccoors/typst-fahrplan)*
+
+[<img src="https://ccoors.github.io/typst-fahrplan/yellow_fahrplan_ccchb.svg" alt="ccoors/typst-fahrplan screenshot" style="max-width: 400px;">](https://github.com/ccoors/typst-fahrplan?tab=readme-ov-file#examples)
+
+A Typst-based Fahrplan generator, rendering the schedule as a clean vector graphic (SVG/PDF). 
+Easy to configure.
